@@ -45,6 +45,8 @@ public class CategoryFragment extends Fragment {
 
     private DataInfo info;
 
+    private boolean isLoadingMore = false;
+
     public static CategoryFragment newInstance(CharSequence title) {
 
         CategoryFragment fragment = new CategoryFragment();
@@ -102,7 +104,7 @@ public class CategoryFragment extends Fragment {
                 if (dy > 0 && dy > ViewConfiguration.get(getContext()).getScaledTouchSlop()){
                     int position = layoutManager.findLastVisibleItemPosition();
                     int count = adapter.getItemCount();
-                    if (position + 1 >= count){
+                    if (!isLoadingMore && position + 1 >= count){
                         loadData(page + 1);
                     }
                 }
@@ -115,16 +117,19 @@ public class CategoryFragment extends Fragment {
     }
 
     private void loadData(final int pageT) {
+        isLoadingMore = true;
         API.PROXY.data(title, PAGE_SIZE, pageT)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new ObserverImp1<String>() {
             @Override
             public void onNext(String s) {
-                info = JSON.parseObject(s, DataInfo.class);
-                if (pageT == 1){
+                if (swipe.isRefreshing()){
                     swipe.setRefreshing(false);
                 }
+                isLoadingMore = false;
+
+                info = JSON.parseObject(s, DataInfo.class);
                 if (!info.isError()){
                     page = pageT;
                     if (pageT == 1){
@@ -136,7 +141,16 @@ public class CategoryFragment extends Fragment {
                     // 错误处理
                 }
             }
-        });
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                        if (swipe.isRefreshing()){
+                            swipe.setRefreshing(false);
+                        }
+                        isLoadingMore = false;
+                    }
+                });
     }
 
 }

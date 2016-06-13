@@ -52,7 +52,7 @@
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:gravity="right"
                     android:hint="2016-05-12T12:04:43.857000"
-                    android:text="@{DateUtil.format(data.publishedAt)}"/>
+                    android:text="@{DateUtil.format(data.createdAt)}"/>
 
             </LinearLayout>
 

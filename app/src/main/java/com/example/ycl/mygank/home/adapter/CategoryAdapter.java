@@ -69,12 +69,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VH> {
         holder.binding.setVariable(BR.data, results);
 
         if (Category.FU_LI.equalsIgnoreCase(results.getType())){
-            Glide.with(holder.itemView.getContext())
+            Glide.with(holder.itemView.getContext().getApplicationContext())
                     .load(results.getUrl())
                     .placeholder(R.drawable.image_loading)
                     .error(R.drawable.image_error)
-//                    .override()
+//                    .override(0, 0)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .dontTransform()
+                    .crossFade()
                     .into(holder.iv);
         } else if (Category.SHI_PIN.equalsIgnoreCase(results.getType())){
 
@@ -121,7 +123,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VH> {
         }
     }
 
-    protected static interface Type{
+    protected interface Type{
         int TEXT = 0;
         int PHOTO = 1;
         int VIDEO = 2;
