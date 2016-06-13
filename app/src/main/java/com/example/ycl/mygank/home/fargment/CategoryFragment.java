@@ -3,6 +3,7 @@ package com.example.ycl.mygank.home.fargment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -76,6 +77,9 @@ public class CategoryFragment extends Fragment {
         swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+//                if (swipe.isRefreshing()){
+//                    return;
+//                }
                 page = 1;
                 loadData(page);
             }
@@ -90,10 +94,6 @@ public class CategoryFragment extends Fragment {
         rv.setAdapter(adapter);
 
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -110,7 +110,8 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-        loadData(page);
+//        loadData(page);
+
     }
 
     private void loadData(final int pageT) {

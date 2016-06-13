@@ -10,6 +10,6 @@ public class Config {
 
     public static final String BASE_URL = "http://gank.io/api/";
 
-    public static final String[] CATEGORYS = new String[]{"all", "Android", "iOS", "前端", "拓展资源", "福利", "休息视频"};
+    public static final String[] CATEGORIES = Category.toCategories();
 
 }

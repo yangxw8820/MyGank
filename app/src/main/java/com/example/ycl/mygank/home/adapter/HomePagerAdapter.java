@@ -12,7 +12,7 @@ import com.example.ycl.mygank.home.fargment.CategoryFragment;
  */
 public class HomePagerAdapter extends FragmentPagerAdapter {
 
-    private static final String[] TITLES = Config.CATEGORYS;
+    private static final String[] TITLES = Config.CATEGORIES;
 
     public HomePagerAdapter(FragmentManager fm) {
         super(fm);

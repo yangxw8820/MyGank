@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class DayInfo {
     /**
-     * category : ["Category","前端","瞎推荐","iOS","Android","拓展资源","福利","休息视频"]
+     * Category : ["Category","前端","瞎推荐","iOS","Android","拓展资源","福利","休息视频"]
      * error : false
      * results : {"Android":[{"_id":"574d6a92421aa910abe2bf99","createdAt":"2016-05-31T18:42:26.172Z","desc":"EventBus3 事件管理插件","publishedAt":"2016-06-01T12:01:44.959Z","source":"chrome","type":"Android","url":"https://github.com/kgmyshin/eventbus3-intellij-plugin","used":true,"who":"蒋朋"}]}
      */
@@ -188,7 +188,7 @@ public class DayInfo {
         JSONObject jsonObject = JSON.parseObject(s);
         boolean error = jsonObject.getBoolean("error");
         JSONObject results = jsonObject.getJSONObject("results");
-        JSONArray category = jsonObject.getJSONArray("category");
+        JSONArray category = jsonObject.getJSONArray("Category");
 
         if (!error){
             Results results1 = new Results();
