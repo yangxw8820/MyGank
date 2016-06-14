@@ -102,6 +102,9 @@ public class DetailActivity extends AppCompatActivity {
         // setting
         WebSettings settings = webView.getSettings();
         settings.setAppCacheEnabled(true);
+//        settings.setAllowContentAccess(true);
+//        settings.setAllowFileAccess(true);
+        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setJavaScriptEnabled(true);
         settings.setLoadsImagesAutomatically(true);
 
@@ -134,7 +137,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 Log.i(TAG, "onPageFinished: " + url);
-                progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -145,6 +148,9 @@ public class DetailActivity extends AppCompatActivity {
 //                    case WebViewClient.ERROR_UNKNOWN:
 //                        break;
 //                }
+                if ((LOCAL_WEB_ROOT + "error.html").equals(failingUrl)){
+                    return;
+                }
                 url = failingUrl;
                 view.loadUrl(LOCAL_WEB_ROOT + "error.html");
             }
