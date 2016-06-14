@@ -19,6 +19,7 @@ public class MainActivityFragment extends Fragment {
 
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
+    private HomePagerAdapter adapter;
 
     public MainActivityFragment() {
     }
@@ -36,7 +37,8 @@ public class MainActivityFragment extends Fragment {
 
         this.tabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
         this.pager = (ViewPager) view.findViewById(R.id.pager);
-        pager.setAdapter(new HomePagerAdapter(getChildFragmentManager()));
+        adapter = new HomePagerAdapter(getChildFragmentManager());
+        pager.setAdapter(adapter);
         tabs.setViewPager(pager);
     }
 

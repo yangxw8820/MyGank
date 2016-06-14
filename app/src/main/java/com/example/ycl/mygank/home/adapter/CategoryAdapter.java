@@ -5,24 +5,22 @@ import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.ycl.mygank.BR;
 import com.example.ycl.mygank.Category;
 import com.example.ycl.mygank.R;
+import com.example.ycl.mygank.adapter.BaseRecyclerViewAdapter;
 import com.example.ycl.mygank.bean.DataInfo;
+import com.example.ycl.mygank.util.ImageUtil;
 
 import java.util.List;
 
 /**
  * Created by YCL on 2016/6/12.
  */
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VH> {
-
+public class CategoryAdapter extends BaseRecyclerViewAdapter<CategoryAdapter.VH> {
 
     private List<DataInfo.Results> list;
 
@@ -69,21 +67,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VH> {
         holder.binding.setVariable(BR.data, results);
 
         if (Category.FU_LI.equalsIgnoreCase(results.getType())){
-            Glide.with(holder.itemView.getContext().getApplicationContext())
-                    .load(results.getUrl())
-                    .placeholder(R.drawable.image_loading)
-                    .error(R.drawable.image_error)
-//                    .override(0, 0)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                    .dontTransform()
-                    .crossFade()
-                    .into(holder.iv);
+            ImageUtil.load(holder.itemView.getContext(), results.getUrl(), holder.iv);
         } else if (Category.SHI_PIN.equalsIgnoreCase(results.getType())){
 
         } else {
 
         }
-
 
     }
 
@@ -92,6 +81,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VH> {
         return list != null ? list.size() : 0;
     }
 
+    public DataInfo.Results getDataFromPosition(int position){
+        DataInfo.Results results = null;
+        if (position >= 0 && position < getItemCount()){
+            results = list.get(position);
+        }
+        return results;
+    }
+
+    /**
+     * 刷新
+     * @param list
+     */
     public void notifyDataRefresh(List<DataInfo.Results> list){
         if (list == null){
             return;
@@ -102,6 +103,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VH> {
 
     }
 
+    /**
+     * 加载更多
+     * @param list
+     */
     public void notifyDataMore(List<DataInfo.Results> list){
         if (list == null){
             return;
@@ -112,6 +117,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VH> {
         notifyItemRangeInserted(count, list.size());
     }
 
+    /**
+     * ViewHolder
+     */
     protected static class VH extends RecyclerView.ViewHolder {
         public ViewDataBinding binding;
         public ImageView iv;
@@ -123,6 +131,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.VH> {
         }
     }
 
+    /**
+     * item 类型
+     */
     protected interface Type{
         int TEXT = 0;
         int PHOTO = 1;

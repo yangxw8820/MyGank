@@ -6,6 +6,8 @@ package com.example.ycl.mygank;
 
 public class Config {
 
+    public static final String TAG = "MyGank";
+
     public static final boolean DEBUG = true;
 
     public static final String BASE_URL = "http://gank.io/api/";

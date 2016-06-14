@@ -1,5 +1,6 @@
 package com.example.ycl.mygank.home.fargment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,15 +10,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
+import com.example.ycl.mygank.Config;
 import com.example.ycl.mygank.R;
 import com.example.ycl.mygank.api.API;
 import com.example.ycl.mygank.bean.DataInfo;
+import com.example.ycl.mygank.home.DetailActivity;
 import com.example.ycl.mygank.home.adapter.CategoryAdapter;
 import com.example.ycl.mygank.rx.ObserverImp1;
 import com.example.ycl.mygank.widget.DividerItemDecoration;
@@ -38,6 +42,8 @@ public class CategoryFragment extends Fragment {
     private int page = 1;
 
     private SwipeRefreshLayout swipe;
+    private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
+
 
     private RecyclerView rv;
     private LinearLayoutManager layoutManager;
@@ -48,7 +54,6 @@ public class CategoryFragment extends Fragment {
     private boolean isLoadingMore = false;
 
     public static CategoryFragment newInstance(CharSequence title) {
-
         CategoryFragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
         args.putString(PARAM1, title.toString());
@@ -76,16 +81,14 @@ public class CategoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         swipe = (SwipeRefreshLayout) view.findViewById(R.id.swipe);
-        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-//                if (swipe.isRefreshing()){
-//                    return;
-//                }
                 page = 1;
                 loadData(page);
             }
-        });
+        };
+        swipe.setOnRefreshListener(onRefreshListener);
 
         rv = (RecyclerView) view.findViewById(R.id.rv);
         layoutManager = new LinearLayoutManager(getContext());
@@ -93,18 +96,25 @@ public class CategoryFragment extends Fragment {
         rv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         rv.setItemAnimator(new DefaultItemAnimator());
         adapter = new CategoryAdapter(null);
+        adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                DataInfo.Results results = adapter.getDataFromPosition(position);
+                DetailActivity.open(getActivity(), results.getUrl());
+            }
+        });
         rv.setAdapter(adapter);
 
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
+//                super.onScrolled(recyclerView, dx, dy);
 
-                if (dy > 0 && dy > ViewConfiguration.get(getContext()).getScaledTouchSlop()){
+                if (dy > 0 && dy > ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
                     int position = layoutManager.findLastVisibleItemPosition();
                     int count = adapter.getItemCount();
-                    if (!isLoadingMore && position + 1 >= count){
+                    if (!isLoadingMore && position + 1 >= count) {
                         loadData(page + 1);
                     }
                 }
@@ -112,40 +122,49 @@ public class CategoryFragment extends Fragment {
             }
         });
 
-//        loadData(page);
+        autoRefresh();
+    }
 
+    private void autoRefresh() {
+        swipe.post(new Runnable() {
+            @Override
+            public void run() {
+                swipe.setRefreshing(true);
+                onRefreshListener.onRefresh();
+            }
+        });
     }
 
     private void loadData(final int pageT) {
         isLoadingMore = true;
         API.PROXY.data(title, PAGE_SIZE, pageT)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new ObserverImp1<String>() {
-            @Override
-            public void onNext(String s) {
-                if (swipe.isRefreshing()){
-                    swipe.setRefreshing(false);
-                }
-                isLoadingMore = false;
+                    @Override
+                    public void onNext(String s) {
+                        if (swipe.isRefreshing()) {
+                            swipe.setRefreshing(false);
+                        }
+                        isLoadingMore = false;
 
-                info = JSON.parseObject(s, DataInfo.class);
-                if (!info.isError()){
-                    page = pageT;
-                    if (pageT == 1){
-                        adapter.notifyDataRefresh(info.getResults());
-                    } else {
-                        adapter.notifyDataMore(info.getResults());
+                        info = JSON.parseObject(s, DataInfo.class);
+                        if (!info.isError()) {
+                            page = pageT;
+                            if (pageT == 1) {
+                                adapter.notifyDataRefresh(info.getResults());
+                            } else {
+                                adapter.notifyDataMore(info.getResults());
+                            }
+                        } else {
+                            // 错误处理
+                        }
                     }
-                } else {
-                    // 错误处理
-                }
-            }
 
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        if (swipe.isRefreshing()){
+                        if (swipe.isRefreshing()) {
                             swipe.setRefreshing(false);
                         }
                         isLoadingMore = false;
