@@ -31,7 +31,6 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = fragments.get(position);
-        Log.i(Config.TAG, "getItem: " + position + ", fragment: " + fragment);
         if (fragment == null){
             fragment = CategoryFragment.newInstance(getPageTitle(position));
             fragments.put(position, fragment);
