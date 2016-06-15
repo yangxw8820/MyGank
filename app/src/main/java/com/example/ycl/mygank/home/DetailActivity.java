@@ -46,6 +46,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
 
+    private boolean isReceivedError = false;
 
     public static void open(Context context, String url) {
         Intent intent = new Intent(context, DetailActivity.class);
@@ -93,9 +94,9 @@ public class DetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack();
-            return;
+        } else {
+            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
     private void initWebView(WebView webView) {
@@ -138,21 +139,32 @@ public class DetailActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
                 Log.i(TAG, "onPageFinished: " + url);
                 progressBar.setVisibility(View.INVISIBLE);
+                if (url.startsWith(LOCAL_WEB_ROOT)){
+                    isReceivedError = true;
+                } else {
+                    isReceivedError = false;
+                }
             }
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
-                Log.i(TAG, "onReceivedError: ");
+                Log.i(TAG, "onReceivedError: " + description);
 //                switch (errorCode) {
 //                    case WebViewClient.ERROR_UNKNOWN:
 //                        break;
 //                }
-                if ((LOCAL_WEB_ROOT + "error.html").equals(failingUrl)){
+                if (failingUrl.startsWith(LOCAL_WEB_ROOT)){
                     return;
                 }
-                url = failingUrl;
-                view.loadUrl(LOCAL_WEB_ROOT + "error.html");
+
+                if (isReceivedError){
+                    onBackPressed();
+                } else {
+                    url = failingUrl;
+                    view.loadUrl(LOCAL_WEB_ROOT + "error.html");
+                }
+
             }
 
         });
@@ -169,7 +181,6 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-//                webView.reload();
                 webView.loadUrl(url);
                 return true;
         }

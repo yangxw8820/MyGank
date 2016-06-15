@@ -1,5 +1,6 @@
 package com.example.ycl.mygank.home.fargment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.ycl.mygank.R;
+import com.example.ycl.mygank.db.CategoryDB;
 import com.example.ycl.mygank.home.adapter.HomePagerAdapter;
 
 /**
@@ -22,6 +24,18 @@ public class MainActivityFragment extends Fragment {
     private HomePagerAdapter adapter;
 
     public MainActivityFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        CategoryDB.init(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        CategoryDB.close();
     }
 
     @Override
