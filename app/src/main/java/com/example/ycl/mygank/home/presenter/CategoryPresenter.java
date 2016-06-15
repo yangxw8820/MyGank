@@ -28,17 +28,12 @@ public class CategoryPresenter {
         page = 1;
         model.data(category, PAGE_SIZE, page).subscribe(new ObserverImp1<DataInfo>() {
             @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                view.completedMsg(true, e.getMessage());
-            }
-
-            @Override
             public void onNext(DataInfo info) {
                 if (!info.isError()) {
                     view.completedRefresh(info);
                 } else {
                     // 错误处理
+                    view.completedMsg(false, info.getMsg());
                 }
                 view.completedMsg(true, "");
             }
@@ -51,18 +46,13 @@ public class CategoryPresenter {
             final int _page = page + 1;
             model.data(category, PAGE_SIZE, _page).subscribe(new ObserverImp1<DataInfo>() {
                 @Override
-                public void onError(Throwable e) {
-                    super.onError(e);
-                    view.completedMsg(true, e.getMessage());
-                }
-
-                @Override
                 public void onNext(DataInfo info) {
                     page = _page;
                     if (!info.isError()) {
                         view.completedLoadMore(info);
                     } else {
                         // 错误处理
+                        view.completedMsg(false, info.getMsg());
                     }
                     view.completedMsg(true, "");
                 }

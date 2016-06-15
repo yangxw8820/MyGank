@@ -12,7 +12,7 @@ import com.example.ycl.mygank.BR;
 import com.example.ycl.mygank.Category;
 import com.example.ycl.mygank.R;
 import com.example.ycl.mygank.adapter.BaseRecyclerViewAdapter;
-import com.example.ycl.mygank.bean.DataInfo;
+import com.example.ycl.mygank.bean.DataResultInfo;
 import com.example.ycl.mygank.util.ImageUtil;
 
 import java.util.List;
@@ -22,16 +22,16 @@ import java.util.List;
  */
 public class CategoryAdapter extends BaseRecyclerViewAdapter<CategoryAdapter.VH> {
 
-    private List<DataInfo.Results> list;
+    private List<DataResultInfo> list;
 
-    public CategoryAdapter(List<DataInfo.Results> list) {
+    public CategoryAdapter(List<DataResultInfo> list) {
         this.list = list;
     }
 
     @Override
     public int getItemViewType(int position) {
         int type;
-        DataInfo.Results results = list.get(position);
+        DataResultInfo results = list.get(position);
         if (Category.FU_LI.equalsIgnoreCase(results.getType())){
             type = Type.PHOTO;
         } else if (Category.SHI_PIN.equalsIgnoreCase(results.getType())){
@@ -62,7 +62,7 @@ public class CategoryAdapter extends BaseRecyclerViewAdapter<CategoryAdapter.VH>
 
     @Override
     public void onBindViewHolder(VH holder, int position) {
-        DataInfo.Results results = list.get(position);
+        DataResultInfo results = list.get(position);
 
         holder.binding.setVariable(BR.data, results);
 
@@ -81,8 +81,8 @@ public class CategoryAdapter extends BaseRecyclerViewAdapter<CategoryAdapter.VH>
         return list != null ? list.size() : 0;
     }
 
-    public DataInfo.Results getDataFromPosition(int position){
-        DataInfo.Results results = null;
+    public DataResultInfo getDataFromPosition(int position){
+        DataResultInfo results = null;
         if (position >= 0 && position < getItemCount()){
             results = list.get(position);
         }
@@ -93,7 +93,7 @@ public class CategoryAdapter extends BaseRecyclerViewAdapter<CategoryAdapter.VH>
      * 刷新
      * @param list
      */
-    public void notifyDataRefresh(List<DataInfo.Results> list){
+    public void notifyDataRefresh(List<DataResultInfo> list){
         if (list == null){
             return;
         }
@@ -107,7 +107,7 @@ public class CategoryAdapter extends BaseRecyclerViewAdapter<CategoryAdapter.VH>
      * 加载更多
      * @param list
      */
-    public void notifyDataMore(List<DataInfo.Results> list){
+    public void notifyDataMore(List<DataResultInfo> list){
         if (list == null){
             return;
         }

@@ -3,15 +3,15 @@ package com.example.ycl.mygank.home.model;
 import com.alibaba.fastjson.JSON;
 import com.example.ycl.mygank.api.API;
 import com.example.ycl.mygank.bean.DataInfo;
+import com.example.ycl.mygank.bean.DataResultInfo;
 import com.example.ycl.mygank.db.CategoryDB;
-import com.example.ycl.mygank.db.bean.ResultsInfo;
-import com.example.ycl.mygank.util.TextUtil;
 
 import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -24,28 +24,34 @@ public class CategoryModelImp implements ICategoryModel {
     public Observable<DataInfo> data(final String classify, final int pageSize, final int page) {
         return API.PROXY.data(classify, pageSize, page)
                 .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(new Func1<Throwable, String>() {
-                    @Override
-                    public String call(Throwable throwable) {
-                        return null;
-                    }
-                })
-                .map(new Func1<String, DataInfo>() { // 处理网络or数据库数据来源
+                .map(new Func1<String, DataInfo>() {
                     @Override
                     public DataInfo call(String s) {
-                        DataInfo info = null;
-                        if (s == null){
-                            info = new DataInfo();
-                            info.setError(false);
-
-                            List<ResultsInfo> infos = CategoryDB.getInstance().get(classify, pageSize, page);
-                            String jsonString = JSON.toJSONString(infos, true);
-                            List<DataInfo.Results> list = JSON.parseArray(jsonString, DataInfo.Results.class);
-                            info.setResults(list);
-                        } else {
-                            info = JSON.parseObject(s, DataInfo.class);
-                            CategoryDB.getInstance().save(info.getResults());
+                        DataInfo info = JSON.parseObject(s, DataInfo.class);
+                        info.setFromLocal(false);
+                        CategoryDB.getInstance().save(info.getResults());
+                        return info;
+                    }
+                })
+                .onErrorReturn(new Func1<Throwable, DataInfo>() {
+                    @Override
+                    public DataInfo call(Throwable throwable) {
+                        DataInfo info = new DataInfo();
+                        info.setError(true);
+                        info.setMsg(throwable.getMessage());
+                        return info;
+                    }
+                })
+                .map(new Func1<DataInfo, DataInfo>() { // 统一处理数据
+                    @Override
+                    public DataInfo call(DataInfo info) {
+                        if (info.isError()){
+                            info.setFromLocal(true);
                         }
+
+                        List<DataResultInfo> infos = CategoryDB.getInstance().get(classify, pageSize, page);
+                        info.setResults(infos);
+                        info.setError(false);
 
                         return info;
                     }

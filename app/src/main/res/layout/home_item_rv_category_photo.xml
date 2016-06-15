@@ -4,7 +4,7 @@
         <import type="com.example.ycl.mygank.util.DateUtil"/>
         <variable
             name="data"
-            type="com.example.ycl.mygank.bean.DataInfo.Results"/>
+            type="com.example.ycl.mygank.bean.DataResultInfo"/>
     </data>
 
     <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"

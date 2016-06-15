@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.ycl.mygank.R;
 import com.example.ycl.mygank.bean.DataInfo;
+import com.example.ycl.mygank.bean.DataResultInfo;
 import com.example.ycl.mygank.home.DetailActivity;
 import com.example.ycl.mygank.home.adapter.CategoryAdapter;
 import com.example.ycl.mygank.home.presenter.CategoryPresenter;
@@ -28,7 +29,6 @@ public class CategoryFragment extends Fragment implements ICategoryView {
     private static final String PARAM1 = "title";
 
     private String title;
-    private int page = 1;
 
     private SwipeRefreshLayout swipe;
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
@@ -88,7 +88,7 @@ public class CategoryFragment extends Fragment implements ICategoryView {
         adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                DataInfo.Results results = adapter.getDataFromPosition(position);
+                DataResultInfo results = adapter.getDataFromPosition(position);
                 DetailActivity.open(getActivity(), results.getUrl());
             }
         });

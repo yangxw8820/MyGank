@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.alibaba.fastjson.JSON;
 import com.example.ycl.mygank.Category;
-import com.example.ycl.mygank.bean.DataInfo;
-import com.example.ycl.mygank.db.bean.ResultsInfo;
+import com.example.ycl.mygank.bean.DataResultInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +30,12 @@ public class CategoryDB {
         } else {
             RealmConfiguration configuration = new RealmConfiguration.Builder(context.getApplicationContext())
                     .name(NAME)
+                    .schemaVersion(1)
+                    .deleteRealmIfMigrationNeeded()
                     .build();
-            Realm.setDefaultConfiguration(configuration);
+//            Realm.setDefaultConfiguration(configuration);
 
-            realm = Realm.getDefaultInstance();
+            realm = Realm.getInstance(configuration);
         }
     }
 
@@ -53,35 +54,36 @@ public class CategoryDB {
         return db;
     }
 
-    public void save(List<DataInfo.Results> results){
-        final String s = JSON.toJSONString(results);
+    public void save(List<DataResultInfo> results){
+        final String s = JSON.toJSONString(results, true);
+//        System.out.println(s);
         realm.beginTransaction();
-        realm.createAllFromJson(ResultsInfo.class, s);
+        realm.createOrUpdateAllFromJson(DataResultInfo.class, s);
         realm.commitTransaction();
 
 //        realm.executeTransactionAsync(new Realm.Transaction() {
 //            @Override
 //            public void execute(Realm realm) {
-//                realm.createAllFromJson(ResultsInfo.class, s);
+//                realm.createAllFromJson(DataResultInfo.class, s);
 //            }
 //        });
     }
 
-    public ResultsInfo get(String id){
-        ResultsInfo info = realm.where(ResultsInfo.class)
-                .equalTo("_id", id)
+    public DataResultInfo get(String id){
+        DataResultInfo info = realm.where(DataResultInfo.class)
+                .equalTo("id", id)
                 .findFirst();
 //        String s = JSON.toJSONString(info);
 //        return JSON.parseObject(s, DataInfo.Results.class);
         return info;
     }
 
-    public List<ResultsInfo> get(String category, int pageSize, int page){
-        RealmQuery<ResultsInfo> realmQuery = realm.where(ResultsInfo.class);
+    public List<DataResultInfo> get(String category, int pageSize, int page){
+        RealmQuery<DataResultInfo> realmQuery = realm.where(DataResultInfo.class);
         if (!Category.ALL.equals(category)){
             realmQuery.equalTo("type", category);
         }
-        RealmResults<ResultsInfo> infos = realmQuery
+        RealmResults<DataResultInfo> infos = realmQuery
                 .findAllSorted("createdAt", Sort.DESCENDING);
 
 //        String jsonString = JSON.toJSONString(infos, true);
@@ -97,7 +99,11 @@ public class CategoryDB {
         if (end > size){
             end = size;
         }
-        return infos.subList(start, end);
+
+        List<DataResultInfo> list = infos.subList(start, end);
+        String s = JSON.toJSONString(list, true);
+
+        return JSON.parseArray(s, DataResultInfo.class);
     }
 
     public static void close(){

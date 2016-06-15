@@ -1,4 +1,4 @@
-package com.example.ycl.mygank.db.bean;
+package com.example.ycl.mygank.bean;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -6,9 +6,9 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by YCL on 2016/6/15.
  */
-public class ResultsInfo extends RealmObject {
+public class DataResultInfo extends RealmObject {
     @PrimaryKey
-    private String _id;
+    private String id;
     private String createdAt;
     private String desc;
     private String publishedAt;
@@ -22,12 +22,12 @@ public class ResultsInfo extends RealmObject {
     private String title;
     private boolean isRead;
 
-    public String get_id() {
-        return _id;
+    public String getId() {
+        return id;
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCreatedAt() {
