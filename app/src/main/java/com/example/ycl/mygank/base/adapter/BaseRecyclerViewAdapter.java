@@ -1,4 +1,4 @@
-package com.example.ycl.mygank.adapter;
+package com.example.ycl.mygank.base.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

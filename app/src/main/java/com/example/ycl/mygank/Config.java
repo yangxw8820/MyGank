@@ -3,7 +3,6 @@ package com.example.ycl.mygank;
 /**
  * Created by ycl on 16/6/7.
  */
-
 public class Config {
 
     public static final String TAG = "MyGank";

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.example.ycl.mygank.BR;
 import com.example.ycl.mygank.Category;
 import com.example.ycl.mygank.R;
-import com.example.ycl.mygank.adapter.BaseRecyclerViewAdapter;
+import com.example.ycl.mygank.base.adapter.BaseRecyclerViewAdapter;
 import com.example.ycl.mygank.bean.DataResultInfo;
 import com.example.ycl.mygank.util.ImageUtil;
 
