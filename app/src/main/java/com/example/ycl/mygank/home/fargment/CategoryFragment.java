@@ -13,6 +13,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.example.ycl.mygank.R;
+import com.example.ycl.mygank.base.BaseFragment;
 import com.example.ycl.mygank.bean.DataInfo;
 import com.example.ycl.mygank.bean.DataResultInfo;
 import com.example.ycl.mygank.home.DetailActivity;
@@ -24,7 +25,7 @@ import com.example.ycl.mygank.widget.DividerItemDecoration;
 /**
  * Created by YCL on 2016/6/12.
  */
-public class CategoryFragment extends Fragment implements ICategoryView {
+public class CategoryFragment extends BaseFragment implements ICategoryView {
 
     private static final String PARAM1 = "title";
 

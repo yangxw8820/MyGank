@@ -11,19 +11,20 @@ import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.example.ycl.mygank.R;
+import com.example.ycl.mygank.base.BaseFragment;
 import com.example.ycl.mygank.db.CategoryDB;
 import com.example.ycl.mygank.home.adapter.HomePagerAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainFragment extends BaseFragment {
 
     private PagerSlidingTabStrip tabs;
     private ViewPager pager;
     private HomePagerAdapter adapter;
 
-    public MainActivityFragment() {
+    public MainFragment() {
     }
 
     @Override
