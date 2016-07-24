@@ -2,8 +2,14 @@ package com.example.ycl.mygank.widget;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
+import android.os.Message;
+import android.view.KeyEvent;
+import android.webkit.HttpAuthHandler;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -67,5 +73,80 @@ public class MWebViewClient extends WebViewClient {
 
     }
 
+    /**
+     * 更新历史记录
+     * @param view
+     * @param url
+     * @param isReload
+     */
+    @Override
+    public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+        super.doUpdateVisitedHistory(view, url, isReload);
+    }
 
+    /**
+     * 应用程序重新请求网页数据
+     * @param view
+     * @param dontResend
+     * @param resend
+     */
+    @Override
+    public void onFormResubmission(WebView view, Message dontResend, Message resend) {
+        super.onFormResubmission(view, dontResend, resend);
+    }
+
+    /**
+     * 获取返回信息授权请求
+     * @param view
+     * @param handler
+     * @param host
+     * @param realm
+     */
+    @Override
+    public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
+        super.onReceivedHttpAuthRequest(view, handler, host, realm);
+    }
+
+    /**
+     * 处理http请求
+     * @param view
+     * @param request
+     * @param errorResponse
+     */
+    @Override
+    public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        super.onReceivedHttpError(view, request, errorResponse);
+    }
+
+    /**
+     * 处理https请求
+     * @param view
+     * @param handler
+     * @param error
+     */
+    @Override
+    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+        super.onReceivedSslError(view, handler, error);
+    }
+
+    /**
+     * 处理在浏览器中的按键事件
+     * @param view
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
+        return super.shouldOverrideKeyEvent(view, event);
+    }
+
+    /**
+     * 加载页面资源时会调用
+     * @param view
+     * @param url
+     */
+    @Override
+    public void onLoadResource(WebView view, String url) {
+        super.onLoadResource(view, url);
+    }
 }

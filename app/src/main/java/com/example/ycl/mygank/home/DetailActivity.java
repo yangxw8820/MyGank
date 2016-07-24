@@ -20,17 +20,22 @@ import android.view.View;
 import android.webkit.ClientCertRequest;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
+import android.webkit.WebHistoryItem;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.webkit.WebViewFragment;
 import android.widget.ProgressBar;
 
 import com.example.ycl.mygank.Config;
 import com.example.ycl.mygank.R;
+import com.example.ycl.mygank.widget.MWebChromeClient;
+import com.example.ycl.mygank.widget.MWebViewClient;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -110,7 +115,7 @@ public class DetailActivity extends AppCompatActivity {
         settings.setLoadsImagesAutomatically(true);
 
         webView.goBackOrForward(8);
-        webView.setWebChromeClient(new WebChromeClient() {
+        webView.setWebChromeClient(new MWebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
@@ -119,7 +124,7 @@ public class DetailActivity extends AppCompatActivity {
             }
 
         });
-        webView.setWebViewClient(new WebViewClient() {
+        webView.setWebViewClient(new MWebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
@@ -154,22 +159,42 @@ public class DetailActivity extends AppCompatActivity {
 //                    case WebViewClient.ERROR_UNKNOWN:
 //                        break;
 //                }
-                if (failingUrl.startsWith(LOCAL_WEB_ROOT)){
-                    return;
-                }
-
-                if (isReceivedError){
-                    onBackPressed();
-                } else {
-                    url = failingUrl;
-                    view.loadUrl(LOCAL_WEB_ROOT + "error.html");
-                }
+//                if (failingUrl.startsWith(LOCAL_WEB_ROOT)){
+//                    return;
+//                }
+//
+//                if (isReceivedError){
+//                    onBackPressed();
+//                } else {
+//                    url = failingUrl;
+//                    view.loadUrl(LOCAL_WEB_ROOT + "error.html");
+//                }
+                view.loadUrl(LOCAL_WEB_ROOT + "error.html");
 
             }
 
-        });
-    }
+            @Override
+            public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+                super.doUpdateVisitedHistory(view, url, isReload);
+                if ((LOCAL_WEB_ROOT + "error.html").equalsIgnoreCase(url)){
+                    WebBackForwardList webBackForwardList = view.copyBackForwardList();
+                    int size = webBackForwardList.getSize();
+                    for (int i = 0; i < size; i++) {
+                        WebHistoryItem historyItem = webBackForwardList.getItemAtIndex(i);
+                        if (url.equals(historyItem.getUrl())){
 
+                        }
+                    }
+                }
+            }
+
+
+
+        });
+
+//        WebBackForwardList
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

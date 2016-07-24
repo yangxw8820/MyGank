@@ -96,6 +96,16 @@ public interface API {
     Observable<String> history(@Path("year") String year, @Path("month") String month, @Path("day") String day);
 
     /**
+     * 搜索
+     * @param classify 可接受参数 all | Android | iOS | 休息视频 | 福利 | 拓展资源 | 前端 | 瞎推荐 | App
+     * @param pageSize
+     * @param page
+     * @return
+     */
+    @GET("search/query/listview/category/{classify}/count/{pageSize}/page/{page}")
+    Observable<String> search(@Field("classify") String classify, @Field("pageSize") int pageSize, @Field("page") int page);
+
+    /**
      * 提交干货到审核区
      *
      * @param url   想要提交的网页地址
