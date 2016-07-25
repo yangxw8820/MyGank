@@ -16,12 +16,25 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import com.alibaba.fastjson.JSON;
 import com.example.ycl.mygank.Config;
 import com.example.ycl.mygank.R;
 import com.example.ycl.mygank.base.BaseActivity;
-import com.example.ycl.mygank.widget.JavascriptInterface;
+import com.example.ycl.mygank.bean.DataResultInfo;
+import com.example.ycl.mygank.db.CollectDB;
+import com.example.ycl.mygank.util.TextUtil;
+import com.example.ycl.mygank.remote.JavascriptInterface;
 import com.example.ycl.mygank.widget.MWebChromeClient;
 import com.example.ycl.mygank.widget.MWebViewClient;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class DetailActivity extends BaseActivity {
 
@@ -30,17 +43,18 @@ public class DetailActivity extends BaseActivity {
     public static final String LOCAL_WEB_ROOT = "file:///android_asset/www/";
     public static final String LOCAL_WEB_ROOT_ERROR = LOCAL_WEB_ROOT + "error.html";
 
-    public static final String PARAM = "url";
+    public static final String PARAM = "DataResult";
 
+    private DataResultInfo result;
     private String loadUrl;
 
     private WebView webView;
 
     private ProgressBar progressBar;
 
-    public static void open(Context context, String url) {
+    public static void open(Context context, DataResultInfo result) {
         Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra(PARAM, url);
+        intent.putExtra(PARAM, JSON.toJSONString(result));
         context.startActivity(intent);
     }
 
@@ -61,13 +75,26 @@ public class DetailActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // 收藏
+                if (!CollectDB.newInstance().isExist(result.getId())){
+                    CollectDB.newInstance().save(result);
+                    Snackbar.make(view, "收藏成功", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    CollectDB.newInstance().delete(result.getId());
+                    Snackbar.make(view, "取消收藏", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
             }
         });
 
         if (getIntent() != null) {
-            loadUrl = getIntent().getStringExtra(PARAM);
+            String s = getIntent().getStringExtra(PARAM);
+            result = JSON.parseObject(s, DataResultInfo.class);
+            loadUrl = result.getUrl();
         }
 
         progressBar = (ProgressBar) findViewById(R.id.pb);
@@ -77,7 +104,6 @@ public class DetailActivity extends BaseActivity {
         initWebView(webView);
 
         webView.loadUrl(loadUrl);
-
     }
 
     private void initWebView(final WebView webView) {
@@ -129,6 +155,15 @@ public class DetailActivity extends BaseActivity {
                 super.onPageFinished(view, url);
                 Log.i(TAG, "onPageFinished: " + url);
                 progressBar.setVisibility(View.INVISIBLE);
+
+                // 设置title
+                String title = view.getTitle();
+                if (!TextUtil.isEmpty(title)){
+                    setTitle(title);
+                }
+
+//                view.loadUrl("javascript:window.jsInterface.showHTML" +
+//                        "('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');");
             }
 
             @Override
@@ -202,14 +237,16 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(PARAM, loadUrl);
+        outState.putString(PARAM, JSON.toJSONString(result));
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        loadUrl = savedInstanceState.getString(PARAM);
+        String s = savedInstanceState.getString(PARAM);
+        result = JSON.parseObject(s, DataResultInfo.class);
+        loadUrl = result.getUrl();
     }
 
     @Override

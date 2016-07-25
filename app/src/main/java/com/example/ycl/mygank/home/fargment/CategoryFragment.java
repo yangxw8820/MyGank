@@ -89,8 +89,8 @@ public class CategoryFragment extends BaseFragment implements ICategoryView {
         adapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onClick(View v, int position) {
-                DataResultInfo results = adapter.getDataFromPosition(position);
-                DetailActivity.open(getActivity(), results.getUrl());
+                DataResultInfo result = adapter.getDataFromPosition(position);
+                DetailActivity.open(getActivity(), result.getUrl());
             }
         });
         rv.setAdapter(adapter);

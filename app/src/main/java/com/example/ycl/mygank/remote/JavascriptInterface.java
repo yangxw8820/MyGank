@@ -1,6 +1,4 @@
-package com.example.ycl.mygank.widget;
-
-import android.webkit.ValueCallback;
+package com.example.ycl.mygank.remote;
 
 /**
  * Created by ycl on 16/7/24.
@@ -15,8 +13,8 @@ public class JavascriptInterface {
     }
 
     @android.webkit.JavascriptInterface
-    public void evaluateJavascript(String name, ValueCallback<String> resultCallback){
-        System.out.println(name);
+    public void showHTML(String html){
+        System.out.println(html);
     }
 
 }
