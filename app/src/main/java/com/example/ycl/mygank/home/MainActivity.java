@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.view.menu.ActionMenuItem;
-import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +21,9 @@ import com.example.ycl.mygank.home.fargment.MainFragment;
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    public static final int NAV_HOME = R.id.nav_home;
+
+    private int curNavigationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +51,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        loadHome();
+        openNavigationItemSelected(NAV_HOME);
     }
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             return;
+        } else if (curNavigationId != NAV_HOME) {
+            openNavigationItemSelected(NAV_HOME);
+            return;
         }
+
         super.onBackPressed();
     }
 
@@ -84,39 +89,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_collect) {
-            // Handle the camera action
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content, CollectFragment.newInstance());
-            transaction.commit();
-        } else if (id == R.id.nav_home) {
-            //
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content, MainFragment.newInstance());
-            transaction.commit();
-        }
-//        else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
-
+        openNavigationItemSelected(id);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void loadHome(){
+    public void openNavigationItemSelected(int id) {
+        curNavigationId = id;
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content, MainFragment.newInstance());
+        switch (id) {
+            case R.id.nav_home:
+                transaction.replace(R.id.content, MainFragment.newInstance());
+                break;
+            case R.id.nav_collect:
+                transaction.replace(R.id.content, CollectFragment.newInstance());
+                break;
+            default:
+                break;
+        }
         transaction.commit();
     }
 

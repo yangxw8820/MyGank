@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 
 import com.example.ycl.mygank.R;
 import com.example.ycl.mygank.base.BaseFragment;
+import com.example.ycl.mygank.base.adapter.BaseRecyclerViewAdapter;
 import com.example.ycl.mygank.bean.DataResultInfo;
 import com.example.ycl.mygank.collect.adapter.CollectAdapter;
 import com.example.ycl.mygank.collect.pressenter.CollectPresenter;
 import com.example.ycl.mygank.collect.view.ICollectView;
+import com.example.ycl.mygank.detail.DetailActivity;
 import com.example.ycl.mygank.widget.DividerItemDecoration;
 
 import java.util.List;
@@ -76,6 +78,12 @@ public class CollectFragment extends BaseFragment implements ICollectView {
         rv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         rv.setItemAnimator(new DefaultItemAnimator());
         adapter = new CollectAdapter(null);
+        adapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                DetailActivity.open(getContext(), adapter.getDataFromPosition(position));
+            }
+        });
         rv.setAdapter(adapter);
         rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
