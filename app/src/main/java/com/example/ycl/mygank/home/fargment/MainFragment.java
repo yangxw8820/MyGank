@@ -3,7 +3,6 @@ package com.example.ycl.mygank.home.fargment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,19 +23,26 @@ public class MainFragment extends BaseFragment {
     private ViewPager pager;
     private HomePagerAdapter adapter;
 
+    public static MainFragment newInstance() {
+        Bundle args = new Bundle();
+        MainFragment fragment = new MainFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public MainFragment() {
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        CategoryDB.init(context);
+        getActivity().setTitle(R.string.app_name);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        CategoryDB.close();
+        CategoryDB.getInstance().close();
     }
 
     @Override

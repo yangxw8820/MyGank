@@ -89,10 +89,13 @@ public abstract class DataBase {
 
     public boolean delete(String id){
         checkRealm();
-        return realm.where(DataResultInfo.class)
+        realm.beginTransaction();
+        boolean b = realm.where(DataResultInfo.class)
                 .equalTo("id", id)
                 .findAll()
                 .deleteFirstFromRealm();
+        realm.commitTransaction();
+        return b;
     }
 
     /**

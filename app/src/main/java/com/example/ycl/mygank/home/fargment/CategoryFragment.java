@@ -2,7 +2,6 @@ package com.example.ycl.mygank.home.fargment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,7 @@ import com.example.ycl.mygank.R;
 import com.example.ycl.mygank.base.BaseFragment;
 import com.example.ycl.mygank.bean.DataInfo;
 import com.example.ycl.mygank.bean.DataResultInfo;
-import com.example.ycl.mygank.home.DetailActivity;
+import com.example.ycl.mygank.detail.DetailActivity;
 import com.example.ycl.mygank.home.adapter.CategoryAdapter;
 import com.example.ycl.mygank.home.presenter.CategoryPresenter;
 import com.example.ycl.mygank.home.view.ICategoryView;
@@ -27,7 +26,7 @@ import com.example.ycl.mygank.widget.DividerItemDecoration;
  */
 public class CategoryFragment extends BaseFragment implements ICategoryView {
 
-    private static final String PARAM1 = "title";
+    private static final String TITLE = "title";
 
     private String title;
 
@@ -45,7 +44,7 @@ public class CategoryFragment extends BaseFragment implements ICategoryView {
     public static CategoryFragment newInstance(CharSequence title) {
         CategoryFragment fragment = new CategoryFragment();
         Bundle args = new Bundle();
-        args.putString(PARAM1, title.toString());
+        args.putString(TITLE, title.toString());
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +54,7 @@ public class CategoryFragment extends BaseFragment implements ICategoryView {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            title = getArguments().getString(PARAM1);
+            title = getArguments().getString(TITLE);
         }
 
         presenter = new CategoryPresenter(this);
@@ -90,7 +89,7 @@ public class CategoryFragment extends BaseFragment implements ICategoryView {
             @Override
             public void onClick(View v, int position) {
                 DataResultInfo result = adapter.getDataFromPosition(position);
-                DetailActivity.open(getActivity(), result.getUrl());
+                DetailActivity.open(getActivity(), result);
             }
         });
         rv.setAdapter(adapter);
@@ -99,15 +98,16 @@ public class CategoryFragment extends BaseFragment implements ICategoryView {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && dy > ViewConfiguration.get(getContext()).getScaledTouchSlop()) {
                     int position = layoutManager.findLastVisibleItemPosition();
                     int count = adapter.getItemCount();
                     if (position + 1 >= count) {
                         presenter.loadMore(title);
+                        return;
                     }
                 }
 
+                super.onScrolled(recyclerView, dx, dy);
             }
         });
 

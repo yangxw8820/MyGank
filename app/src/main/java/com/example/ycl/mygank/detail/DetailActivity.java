@@ -1,4 +1,4 @@
-package com.example.ycl.mygank.home;
+package com.example.ycl.mygank.detail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,15 +27,9 @@ import com.example.ycl.mygank.remote.JavascriptInterface;
 import com.example.ycl.mygank.widget.MWebChromeClient;
 import com.example.ycl.mygank.widget.MWebViewClient;
 
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-
+/**
+ *
+ */
 public class DetailActivity extends BaseActivity {
 
     public static final String TAG = Config.TAG;
@@ -200,6 +194,11 @@ public class DetailActivity extends BaseActivity {
 
     }
 
+    /**
+     * 正确的后退
+     * @param webView
+     * @return
+     */
     private boolean goBack(WebView webView){
         boolean canGoBack = false;
         WebBackForwardList backForwardList = webView.copyBackForwardList();
@@ -256,5 +255,8 @@ public class DetailActivity extends BaseActivity {
         if (webView != null){
             webView.destroy();
         }
+
+        CollectDB.newInstance().close();
+
     }
 }
