@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.ycl.mygank.welcome.WelcomeActivity"
+    tools:context="com.yangxw.example.app.mygank.welcome.WelcomeActivity"
     tools:showIn="@layout/activity_welcome">
 
 </android.support.constraint.ConstraintLayout>

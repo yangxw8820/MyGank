@@ -2,7 +2,7 @@
     <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
     <!--xmlns:tools="http://schemas.android.com/tools"-->
     <!--android:id="@+id/fragment"-->
-    <!--android:name="com.example.ycl.mygank.home.fargment.MainFragment"-->
+    <!--android:nacom.yangxw.example.app.mygank.homehome.fargment.MainFragment"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
     <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
