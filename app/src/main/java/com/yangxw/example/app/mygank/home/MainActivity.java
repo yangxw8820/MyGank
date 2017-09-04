@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.example.ycl.mygank.R;
+import com.yangxw.example.app.mygank.R;
 import com.yangxw.example.app.mygank.base.BaseActivity;
 import com.yangxw.example.app.mygank.collect.CollectFragment;
 import com.yangxw.example.app.mygank.home.fargment.MainFragment;

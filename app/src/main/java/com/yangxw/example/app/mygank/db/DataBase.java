@@ -30,7 +30,7 @@ public abstract class DataBase {
             throw new RuntimeException("必须先调用init初始化");
         }
 
-        RealmConfiguration configuration = new RealmConfiguration.Builder(mContext)
+        RealmConfiguration configuration = new RealmConfiguration.Builder()
                 .name(getName())
                 .schemaVersion(getVersion())
                 .deleteRealmIfMigrationNeeded()
@@ -44,6 +44,8 @@ public abstract class DataBase {
         }
 
         mContext = context.getApplicationContext();
+
+        Realm.init(mContext);
     }
 
     protected void checkRealm(){

@@ -17,8 +17,8 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.alibaba.fastjson.JSON;
-import com.example.ycl.mygank.Config;
-import com.example.ycl.mygank.R;
+import com.yangxw.example.app.mygank.Config;
+import com.yangxw.example.app.mygank.R;
 import com.yangxw.example.app.mygank.base.BaseActivity;
 import com.yangxw.example.app.mygank.bean.DataResultInfo;
 import com.yangxw.example.app.mygank.db.CollectDB;

@@ -24,6 +24,6 @@ public class ExampleInstrumentationTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.ycl.mygank", appContext.getPackageName());
+        assertEquals("com.yangxw.example.app.mygank", appContext.getPackageName());
     }
 }

@@ -1,6 +1,6 @@
 package com.yangxw.example.app.mygank.api;
 
-import com.example.ycl.mygank.Config;
+import com.yangxw.example.app.mygank.Config;
 import com.yangxw.example.app.mygank.string.StringConverterFactory;
 
 import retrofit2.Retrofit;

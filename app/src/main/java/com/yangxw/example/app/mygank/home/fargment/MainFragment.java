@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.example.ycl.mygank.R;
+import com.yangxw.example.app.mygank.R;
 import com.yangxw.example.app.mygank.base.BaseFragment;
 import com.yangxw.example.app.mygank.db.CategoryDB;
 import com.yangxw.example.app.mygank.home.adapter.HomePagerAdapter;

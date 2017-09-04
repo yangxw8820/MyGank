@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.ycl.mygank.BR;
+import com.yangxw.example.app.mygank.BR;
 import com.yangxw.example.app.mygank.Category;
-import com.example.ycl.mygank.R;
+import com.yangxw.example.app.mygank.R;
 import com.yangxw.example.app.mygank.base.adapter.BaseRecyclerViewAdapter;
 import com.yangxw.example.app.mygank.bean.DataResultInfo;
 import com.yangxw.example.app.mygank.util.ImageUtil;

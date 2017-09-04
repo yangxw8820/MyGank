@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
-import com.example.ycl.mygank.R;
+import com.yangxw.example.app.mygank.R;
 import com.yangxw.example.app.mygank.home.MainActivity;
 
 public class WelcomeActivity extends AppCompatActivity {

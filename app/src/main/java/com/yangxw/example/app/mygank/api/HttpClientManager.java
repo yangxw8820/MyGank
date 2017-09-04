@@ -1,6 +1,6 @@
 package com.yangxw.example.app.mygank.api;
 
-import com.example.ycl.mygank.Config;
+import com.yangxw.example.app.mygank.Config;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;

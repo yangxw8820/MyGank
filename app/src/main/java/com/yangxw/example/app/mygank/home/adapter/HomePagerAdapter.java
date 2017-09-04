@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-import com.example.ycl.mygank.Config;
+import com.yangxw.example.app.mygank.Config;
 import com.yangxw.example.app.mygank.home.fargment.CategoryFragment;
 
 import java.util.Map;

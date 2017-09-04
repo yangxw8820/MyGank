@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.example.ycl.mygank.R;
+import com.yangxw.example.app.mygank.R;
 
 /**
  * Created by YCL on 2016/6/14.

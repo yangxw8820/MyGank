@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
-import com.example.ycl.mygank.R;
+import com.yangxw.example.app.mygank.R;
 import com.yangxw.example.app.mygank.base.BaseFragment;
 import com.yangxw.example.app.mygank.base.adapter.BaseRecyclerViewAdapter;
 import com.yangxw.example.app.mygank.bean.DataResultInfo;
